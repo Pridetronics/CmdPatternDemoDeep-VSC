@@ -25,7 +25,7 @@ public class CommandOne extends CommandAbstract {
   }
   
   public void end() {
-    System.out.println("CoomandOne is done");
+    System.out.println("CommandOne is done");
     super.end();
   }
   
