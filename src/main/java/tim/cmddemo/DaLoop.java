@@ -4,10 +4,12 @@ import java.util.ArrayDeque;
 import java.util.Stack;
 
 public class DaLoop {
-  private static final int TIMEPRINT = 100;
+
   private ArrayDeque<CommandAbstract> commands;
   private boolean teleop;
+
   private double fpgaTime;
+  private static final int TIMEPRINT = 1;
   private static final double LOOPTIMESTEP = 0.020;
   private static final double ENDTIME = 1.0;
 
@@ -77,12 +79,13 @@ public class DaLoop {
 
   public static void main(String[] args) {
     DaLoop daRobot = new DaLoop();
-    daRobot.addCommand(new CommandOne( "A" ));
-    daRobot.addCommand(new CommandTwo( "B" );
-    daRobot.addCommand(new CommandThree( "C" ));
-    daRobot.addCommand(new CommandFour( "D" ));
+    daRobot.addCommand(new CommandOne("A"));
+    daRobot.addCommand(new CommandTwo("B"));
+    daRobot.addCommand(new CommandThree("C"));
+    daRobot.addCommand(new CommandFour("D"));
     daRobot.toggleTeleop();
     daRobot.runRobot();
-    System.out.println( Time " + daRobot.getTime() );
+    System.out.println();
+    System.out.println("End Time " + daRobot.getTime());
   } // end main
 } // end class DaLoop
