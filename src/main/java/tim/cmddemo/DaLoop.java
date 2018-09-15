@@ -9,15 +9,20 @@ public class DaLoop {
   private boolean teleop;
 
   private double fpgaTime;
-  private static final int TIMEPRINT = 1;
+  private static final int TIMEPRINT = 20;
   private static final double LOOPTIMESTEP = 0.020;
-  private static final double ENDTIME = 1.0;
+  private double endTime;
 
-  public DaLoop() { // ctor
+  public DaLoop(double timeToStop) { // ctor
     commands = new ArrayDeque<CommandAbstract>();
     commands.addFirst(new CommandOne("default"));
     teleop = false;
     fpgaTime = 0.0;
+    setEndTime(timeToStop);
+  }
+
+  public void setEndTime(double timeToStop) {
+    endTime = timeToStop;
   }
 
   public double getTime() {
@@ -42,7 +47,7 @@ public class DaLoop {
     fpgaTime = 0;
     while (teleop) {
       fpgaTime += LOOPTIMESTEP;
-      if (fpgaTime > ENDTIME) {
+      if (fpgaTime > endTime) {
         toggleTeleop();
       }
       teleopPeriodic();
@@ -57,6 +62,7 @@ public class DaLoop {
 
   public boolean run() {
     boolean status = true;
+
     Stack<CommandAbstract> deleteList = new Stack<>();
 
     if ((fpgaTime * 1000.0) % TIMEPRINT == 0) {
@@ -78,7 +84,7 @@ public class DaLoop {
   } // end run
 
   public static void main(String[] args) {
-    DaLoop daRobot = new DaLoop();
+    DaLoop daRobot = new DaLoop(1.0);
     daRobot.addCommand(new CommandOne("A"));
     daRobot.addCommand(new CommandTwo("B"));
     daRobot.addCommand(new CommandThree("C"));
