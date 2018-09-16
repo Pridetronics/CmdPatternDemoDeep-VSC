@@ -5,8 +5,8 @@ import java.util.Stack;
 
 public class DaLoop {
 
-  private ArrayDeque<CommandAbstract> commands;
-  private boolean teleop;
+  private ArrayDeque<CommandAbstract> activeCommands;
+  private boolean autonomousActive;
 
   private double fpgaTime;
   private static final int TIMEPRINT = 20;
@@ -14,9 +14,9 @@ public class DaLoop {
   private double endTime;
 
   public DaLoop(double timeToStop) { // ctor
-    commands = new ArrayDeque<CommandAbstract>();
-    commands.addFirst(new CommandOne("default"));
-    teleop = false;
+    activeCommands = new ArrayDeque<CommandAbstract>();
+    activeCommands.addFirst(new CommandOne("default"));
+    autonomousActive = false;
     fpgaTime = 0.0;
     setEndTime(timeToStop);
   }
@@ -30,37 +30,39 @@ public class DaLoop {
   }
 
   public void addCommand(CommandAbstract c) { // add a command to commands
-    commands.add(c);
+    activeCommands.add(c);
     c.initialize();
   }
 
   public void removeCommand(CommandAbstract c) { // remove command from the command list
     c.end();
-    commands.remove(c);
+    activeCommands.remove(c);
   }
 
-  public boolean toggleTeleop() { // toggle teleop on/off
-    return teleop = !teleop;
+  public boolean toggleAutonomousActive() { // toggle autonomousActive on/off
+    return autonomousActive = !autonomousActive;
   }
 
   public boolean runRobot() {
     fpgaTime = 0;
-    while (teleop) {
+    while (autonomousActive) {
       fpgaTime += LOOPTIMESTEP;
       if (fpgaTime > endTime) {
-        toggleTeleop();
+        toggleAutonomousActive();
       }
-      teleopPeriodic();
+      autonomousActivePeriodic();
     }
     return true;
   }
 
-  public boolean teleopPeriodic() {
+  public boolean autonomousActivePeriodic() {
     run();
     return true;
   }
 
   public boolean run() {
+    // this is the moral equivalent of Scheduler.getInstance().run()
+
     boolean status = true;
 
     // use this list to remember which commands have finished
@@ -73,7 +75,7 @@ public class DaLoop {
     }
 
     // execute each active command
-    for (CommandAbstract c : commands) {
+    for (CommandAbstract c : activeCommands) {
       if (c.getName() == "default")
         continue; // skip the default command
       c.execute();
@@ -85,7 +87,7 @@ public class DaLoop {
 
     while (!deleteList.empty()) {
       // remove commands that are done from the execution list
-      commands.remove(deleteList.pop());
+      activeCommands.remove(deleteList.pop());
     }
 
     return status;
@@ -101,8 +103,8 @@ public class DaLoop {
     daRobot.addCommand(new CommandThree("C"));
     daRobot.addCommand(new CommandFour("D"));
 
-    // set teleoperation active
-    daRobot.toggleTeleop();
+    // set autonomousActiveeration active
+    daRobot.toggleAutonomousActive();
 
     // start the robot
     daRobot.runRobot();
