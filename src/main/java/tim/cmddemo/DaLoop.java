@@ -66,7 +66,7 @@ public class DaLoop {
     // use this list to remember which commands have finished
     Stack<CommandAbstract> deleteList = new Stack<>();
 
-    if ((fpgaTime * 1000.0) % TIMEPRINT == 0) {
+    if (Math.round(fpgaTime * 1000.0) % TIMEPRINT == 0) {
       // print the time out every now and then
       System.out.println();
       System.out.println("Time " + fpgaTime);
