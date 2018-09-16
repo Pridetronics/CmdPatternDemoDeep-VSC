@@ -63,34 +63,51 @@ public class DaLoop {
   public boolean run() {
     boolean status = true;
 
+    // use this list to remember which commands have finished
     Stack<CommandAbstract> deleteList = new Stack<>();
 
     if ((fpgaTime * 1000.0) % TIMEPRINT == 0) {
+      // print the time out every now and then
       System.out.println();
       System.out.println("Time " + fpgaTime);
     }
+
+    // execute each active command
     for (CommandAbstract c : commands) {
       if (c.getName() == "default")
-        continue; // skip the default ommand
+        continue; // skip the default command
       c.execute();
       if (c.isFinished()) {
+        // if the command is done, remember for deletion later
         deleteList.push(c);
       }
     }
+
     while (!deleteList.empty()) {
+      // remove commands that are done from the execution list
       commands.remove(deleteList.pop());
     }
+
     return status;
   } // end run
 
   public static void main(String[] args) {
+    // create a robot
     DaLoop daRobot = new DaLoop(1.0);
+
+    // add commands to execute
     daRobot.addCommand(new CommandOne("A"));
     daRobot.addCommand(new CommandTwo("B"));
     daRobot.addCommand(new CommandThree("C"));
     daRobot.addCommand(new CommandFour("D"));
+
+    // set teleoperation active
     daRobot.toggleTeleop();
+
+    // start the robot
     daRobot.runRobot();
+
+    // all done
     System.out.println();
     System.out.println("End Time " + daRobot.getTime());
   } // end main
