@@ -1,3 +1,4 @@
 {
-  "editor.dragAndDrop": false
+  "editor.dragAndDrop": false,
+  "java.configuration.updateBuildConfiguration": "interactive"
 }
