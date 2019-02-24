@@ -76,7 +76,7 @@ public class DaLoop {
 
     // execute each active command
     for (CommandAbstract c : activeCommands) {
-      if (c.getName() == "default")
+      if (c.getName().contains("default"))
         continue; // skip the default command
       c.execute();
       if (c.isFinished()) {
