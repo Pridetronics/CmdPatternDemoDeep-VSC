@@ -3,6 +3,15 @@ package tim.cmddemo;
 import java.util.ArrayDeque;
 import java.util.Stack;
 
+/* 
+//To show the inner workings of the command schedule.
+// Set break points to line 59
+// Go to Debug in the taskbar uptop
+// Run without Debugging
+// Then Start Debugging
+// You should be able to see changes on the left where it says variables.
+*/
+
 public class DaLoop {
 
   private ArrayDeque<CommandAbstract> activeCommands;
