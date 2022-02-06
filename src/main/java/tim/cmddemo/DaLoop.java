@@ -23,6 +23,9 @@ public class DaLoop {
   private double endTime;
 
   public DaLoop(double timeToStop) { // ctor
+
+    System.out.println("\nRunning DaLoop\n");
+
     activeCommands = new ArrayDeque<CommandAbstract>();
     activeCommands.addFirst(new CommandOne("default"));
     autonomousActive = false;
