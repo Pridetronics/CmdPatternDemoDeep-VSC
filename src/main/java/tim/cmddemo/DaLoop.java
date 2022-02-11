@@ -4,7 +4,7 @@ import java.util.ArrayDeque;
 import java.util.Stack;
 
 /* 
-//To show the inner workings of the command schedule.
+// To show the inner workings of the command scheduler.
 // Set break points to line 59
 // Go to Debug in the taskbar uptop
 // Run without Debugging
@@ -26,9 +26,14 @@ public class DaLoop {
 
     System.out.println("\nRunning DaLoop\n");
 
+    // set up command list
+    // first entry is a null command as a marker
     activeCommands = new ArrayDeque<CommandAbstract>();
     activeCommands.addFirst(new CommandOne("default"));
+
+    // current state of the system
     autonomousActive = false;
+
     fpgaTime = 0.0;
     setEndTime(timeToStop);
   }
@@ -105,7 +110,13 @@ public class DaLoop {
     return status;
   } // end run
 
+  ////////////////////////////////////////////////////////////////////////////////
+  //
+  // main
+  //
+  ////////////////////////////////////////////////////////////////////////////////
   public static void main(String[] args) {
+
     // create a robot
     DaLoop daRobot = new DaLoop(1.0);
 
@@ -124,5 +135,6 @@ public class DaLoop {
     // all done
     System.out.println();
     System.out.println("End Time " + daRobot.getTime());
+
   } // end main
 } // end class DaLoop
